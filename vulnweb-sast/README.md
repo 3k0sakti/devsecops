@@ -106,40 +106,22 @@ rules:
           - pattern: $PDO->query($SQL)
       - pattern-inside: |
           $SQL = $ANY
+      - metavariable-regex:
+          metavariable: $ANY
+          regex: "\\$_(GET|POST|REQUEST|COOKIE|FILES|SERVER)"
     metadata:
       cwe: "CWE-89"
-    # flag when $SQL contains concatenation with a user-input metavariable
-    languages: [php]
-    pattern-sources:
-      - pattern: $SQL = $LEFT . $RIGHT
-    patterns:
-      - pattern: $SQL = $LEFT . $RIGHT
-      - metavariable-regex:
-          metavariable: $RIGHT
-          regex: "\\$_(GET|POST|REQUEST|COOKIE|FILES|SERVER)\\b|\\$[A-Za-z_][A-Za-z0-9_]*" 
 
   - id: php-sql-injection-direct-user
     message: "Direct use of superglobals in SQL string — possible injection."
     languages: [php]
     severity: ERROR
     pattern-either:
-      - pattern: mysqli_query(..., "..." + $USER)
-      - pattern: mysqli_query(..., $SQL)
-      - pattern: $DB->query("...".$_GET["$X"]."...")
-      - pattern: $DB->query("...".$_POST["$X"]."...")
+      - pattern: mysqli_query(..., "..." . $_GET[$X] . "...")
+      - pattern: mysqli_query(..., "..." . $_POST[$X] . "...")
+      - pattern: $DB->query("..." . $_REQUEST[$X] . "...")
     metadata:
       cwe: "CWE-89"
-
-  - id: php-pdo-prepared-ok
-    message: "Use of prepared statements with bound parameters detected (good)."
-    languages: [php]
-    severity: INFO
-    pattern-either:
-      - pattern: $stmt = $pdo->prepare($QUERY)
-      - pattern: $stmt->bindParam(...)
-      - pattern: $stmt->execute(...)
-    metadata:
-      note: "This reduces false positives by recognizing safe patterns."
 
   - id: php-hardcoded-credentials
     message: "Hardcoded credential or secret detected — consider using environment variables or secret manager."
@@ -148,52 +130,39 @@ rules:
     patterns:
       - pattern-either:
           - pattern: define("DB_PASS", $VAL)
-          - pattern: define('DB_PASS', $VAL)
-          - pattern: define("DB_USER", $VAL)
+          - pattern: define('DB_USER', $VAL)
           - pattern: $config['password'] = $VAL
           - pattern: $dbPassword = $VAL
           - pattern: $creds = ['password' => $VAL]
       - metavariable-regex:
           metavariable: $VAL
-          regex: "^'[^']{1,200}'$|^\"[^\"]{1,200}\"$"
+          regex: "^['\"][^'\"]{3,200}['\"]$"
     metadata:
       cwe: "CWE-798"
 
-  - id: php-hardcoded-credentials-env-ok
-    message: "Credential read from environment or config function (safer)."
-    languages: [php]
-    severity: INFO
-    pattern-either:
-      - pattern: define("DB_PASS", getenv(...))
-      - pattern: define("DB_PASS", $_ENV[...])
-      - pattern: $dbPassword = getenv(...)
-      - pattern: $dbPassword = $_ENV[...]
-
   - id: php-weak-session-settings
-    message: "Insecure session cookie/config detected (cookie_httponly=false or cookie_secure=false or SameSite missing)."
+    message: "Insecure session cookie/config detected (cookie_httponly=false or cookie_secure=false)."
     languages: [php]
     severity: ERROR
     pattern-either:
       - pattern: ini_set('session.cookie_httponly', 0)
-      - pattern: ini_set("session.cookie_httponly", "0")
-      - pattern: ini_set('session.cookie_secure', 0)
-      - pattern: ini_set('session.cookie_secure', "0")
+      - pattern: ini_set("session.cookie_secure", 0)
       - pattern: session_set_cookie_params(..., ['httponly' => false])
       - pattern: session_set_cookie_params(..., ['secure' => false])
     metadata:
       cwe: "CWE-614"
 
   - id: php-session-missing-secure-options
-    message: "Session is started without secure cookie flags or session_regenerate_id not used — check cookie_secure, httponly, samesite and session_regenerate_id usage."
+    message: "Session started without secure cookie flags — check cookie_secure, httponly, samesite."
     languages: [php]
     severity: WARNING
-    pattern:
-      - pattern: session_start()
     patterns:
+      - pattern: session_start()
       - pattern-not: ini_set('session.cookie_secure', 1)
       - pattern-not: ini_set('session.cookie_httponly', 1)
       - pattern-not: ini_set('session.cookie_samesite', "Strict")
-
+    metadata:
+      cwe: "CWE-614"
 ```
 
 Jalankan dengan custom rules:
