@@ -93,16 +93,13 @@ Repositori Tim (GitHub) : ___________________________
 ```
 OS       : Ubuntu 22.04 LTS
 CPU      : 2 vCPU
-RAM      : 2 GB
-Storage  : 20 GB SSD
-Web      : Apache 2.4 / Nginx
-Database : MySQL 8.0 / MariaDB 10.6
-PHP      : PHP 7.4 (sengaja versi lama untuk reproduksi CVE)
+RAM      : 8 GB
+Storage  : 32 GB SSD
 ```
 
 ### 4.2 Instalasi OJS Versi Vulnerable
 
-> Target versi: **OJS 3.3.0-8** (mengandung CVE-2021-27188 dan CVE-2022-24822)
+> Target versi: **OJS 3.3.0-8** (mengandung CVE-2021-27188 dan CVE-2022-24822) atau bisa versi yang lain
 
 **Langkah 1 — Akses VPS via SSH**
 ```bash
