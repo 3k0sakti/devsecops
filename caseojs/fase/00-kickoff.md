@@ -78,7 +78,7 @@ Repositori Tim (GitHub) : ___________________________
 
 | Aturan | Keterangan |
 |---|---|
-| Waktu pengujian | Hanya selama jam kuliah & praktikum |
+| Waktu pengujian | selama waktu penugasan |
 | Metode | Non-destructive (jangan hapus/ubah data produksi) |
 | Dokumentasi | Semua aktivitas harus dicatat (log, screenshot) |
 | Pelaporan | Temuan kritis wajib dilaporkan ke dosen dalam 24 jam |
