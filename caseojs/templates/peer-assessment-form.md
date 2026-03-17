@@ -2,7 +2,7 @@
 
 > **Petunjuk Pengisian:**
 > - Isi satu form ini untuk **setiap rekan satu tim** (bukan untuk diri sendiri)
-> - akan disediakan by google form
+> - akan disediakan by **google form**
 > - Pengisian bersifat **rahasia**, hasil tidak dibuka ke sesama anggota tim
 > - Deadline: **H+1 setelah presentasi**
 
