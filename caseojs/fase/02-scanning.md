@@ -30,15 +30,12 @@ Pastikan tool berikut tersedia di mesin attacker (bukan VPS target):
 
 ```bash
 # Cek ketersediaan tool
-which nikto && nikto -Version
+Burp Suite 
 which sqlmap && sqlmap --version
 zap.sh -version  # atau zaproxy -version
 ```
 
-Install jika belum ada:
-```bash
-# Nikto
-sudo apt install nikto -y
+
 
 # SQLMap
 sudo apt install sqlmap -y
